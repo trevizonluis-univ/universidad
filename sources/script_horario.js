@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Inicializar selector de turnos
         cambia_turnos();
     }
-    
+
     // Si estamos en la página de horario generado, cargar los datos
     if (document.getElementById('schedule-content')) {
         loadGeneratedSchedule();
@@ -332,12 +332,16 @@ function limpiarFormulario() {
     document.getElementById('hora_salida').value = '';
     document.getElementById('dia').value = '';
     document.getElementById('turno').value = '';
+    document.getElementById('turno').value = '';
 }
 
 /**
  * Genera y guarda el contenido del horario para ser mostrado en la página de visualización
  */
 function GenerateScheduleContent() {
+    let scheduleColor = document.getElementById("color_personalizado").value
+    const colorOscuro = ajustarBrillo(scheduleColor, -40); // -40% de brillo
+
     // Verificar si hay al menos un evento registrado
     let hasEvents = false;
     for (const turno in eventos) {
@@ -363,11 +367,11 @@ function GenerateScheduleContent() {
 
     // Generar el HTML del horario
     let scheduleHTML = '<div class="tables-container">';
-    
+
     turnosVisibles.forEach(turno => {
         const turnoNombre = turno === 'm' ? 'Mañana' : turno === 't' ? 'Tarde' : 'Noche';
         const turnoId = turno === 'm' ? 'm' : turno === 't' ? 't' : 'n';
-        
+
         scheduleHTML += `
             <div class="turno-section">
                 <div class="turno-header">Turno de ${turnoNombre}</div>
@@ -384,18 +388,18 @@ function GenerateScheduleContent() {
                         </tr>
                     </thead>
                     <tbody>`;
-        
+
         // Generar las filas de la tabla
         const numBloques = turno === 'm' ? 6 : 5;
         const horas = turno === 'm' ? texto_m.slice(1) : turno === 't' ? texto_t.slice(1) : texto_n.slice(1);
-        
+
         for (let bloque = 1; bloque <= numBloques; bloque++) {
             scheduleHTML += `<tr>`;
             scheduleHTML += `<td class="hora-col">${horas[bloque - 1]}</td>`;
-            
+
             for (let dia = 0; dia < 6; dia++) {
                 const evento = eventos[turno][bloque] ? eventos[turno][bloque][dia] : null;
-                
+
                 if (evento && evento.entrada === bloque) {
                     const duracion = evento.salida - evento.entrada + 1;
                     scheduleHTML += `<td class="filled-cell"${duracion > 1 ? ` rowspan="${duracion}"` : ''}>
@@ -409,19 +413,23 @@ function GenerateScheduleContent() {
                     scheduleHTML += `<td></td>`;
                 }
             }
-            
+
             scheduleHTML += `</tr>`;
         }
-        
+
         scheduleHTML += `</tbody></table></div>`;
     });
-    
+
     scheduleHTML += '</div>';
 
     // Guardar en sessionStorage y redirigir
     sessionStorage.setItem('scheduleContent', scheduleHTML);
+    sessionStorage.setItem('scheduleColor', scheduleColor);
+    sessionStorage.setItem('scheduleNewColor', colorOscuro);
+
     sessionStorage.setItem('generationDate', new Date().toLocaleString('es-VE'));
-    
+    document.getElementById('color_personalizado').value = getComputedStyle(document.body).getPropertyValue('--ucla')
+
     // Redirigir a la página de visualización
     window.location.href = 'horario_generado.html';
 }
@@ -432,7 +440,14 @@ function GenerateScheduleContent() {
 function loadGeneratedSchedule() {
     const scheduleContent = sessionStorage.getItem('scheduleContent');
     const generationDate = sessionStorage.getItem('generationDate');
-    
+    const scheduleColor = sessionStorage.getItem("scheduleColor");
+    const scheduleNewColor = sessionStorage.getItem("scheduleNewColor")
+
+    if (scheduleColor) {
+        document.body.style.setProperty('--ucla', scheduleColor)
+        document.body.style.setProperty('--ucla-gradient', scheduleNewColor)
+
+    }
     if (scheduleContent) {
         document.getElementById('schedule-content').innerHTML = scheduleContent;
         if (generationDate) {
@@ -471,4 +486,18 @@ function limpiar_tabla() {
     } else {
         alert('Turno no válido. Use m, t o n');
     }
+}
+
+function ajustarBrillo(hex, porcentaje) {
+    // Convertir hex a RGB
+    let r = parseInt(hex.slice(1, 3), 16);
+    let g = parseInt(hex.slice(3, 5), 16);
+    let b = parseInt(hex.slice(5, 7), 16);
+
+    // Ajustar brillo
+    r = Math.max(0, Math.min(255, r + (r * porcentaje / 100)));
+    g = Math.max(0, Math.min(255, g + (g * porcentaje / 100)));
+    b = Math.max(0, Math.min(255, b + (b * porcentaje / 100)));
+
+    return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
 }

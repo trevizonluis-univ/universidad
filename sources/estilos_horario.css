@@ -6,6 +6,8 @@
 }
 
 :root {
+    --ucla: #1a3a6c;
+    --ucla-gradient: #0d2440;
     --ucla-blue: #1a3a6c;
     --ucla-gold: #ffb81c;
     --light-blue: #e6f0ff;
@@ -109,7 +111,7 @@ header.header {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: var(--ucla-blue);
+    color: var(--ucla);
 }
 
 .form-control {
@@ -123,7 +125,7 @@ header.header {
 }
 
 .form-control:focus {
-    border-color: var(--ucla-blue);
+    border-color: var(--ucla);
     outline: none;
     box-shadow: 0 0 0 3px rgba(26, 58, 108, 0.2);
 }
@@ -223,7 +225,7 @@ select.form-control {
 }
 
 .turno-header {
-    background: linear-gradient(to right, var(--ucla-blue), #0d2440);
+    background: linear-gradient(to right, var(--ucla), var(--ucla-gradient));
     color: white;
     padding: 15px;
     text-align: center;
@@ -247,7 +249,7 @@ td {
 th {
     background-color: #f1f5f9;
     font-weight: 600;
-    color: var(--ucla-blue);
+    color: black;
     position: sticky;
     top: 0;
 }
@@ -259,8 +261,6 @@ th {
 }
 
 .filled-cell {
-    background-color: #d1ecf1;
-    color: #0c5460;
     font-weight: 500;
     position: relative;
     overflow: hidden;
