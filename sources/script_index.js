@@ -60,7 +60,7 @@ async function getAnimalito() {
         response = await fetch("https://api.thedogapi.com/v1/images/search?api_key=" + token_dog);
     }
     if (!response.ok) {
-        throw new Error("Error al obtener la imagen del gato: " + response.statusText);
+        throw new Error("Error al obtener la imagen del animal: " + response.statusText);
     }
     const data = await response.json();
     new_data = {
@@ -71,7 +71,7 @@ async function getAnimalito() {
     }
     return new_data;
 }
-var mantenimiento_dcee = false
+var mantenimiento_dcee = true
 var mantenimiento_deha = true
 const decanatos_carreras = {
     dcee: {
