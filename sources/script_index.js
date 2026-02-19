@@ -347,7 +347,7 @@ async function autodesarrollos() {
                 <h2 class="result-title">Autodesarrollos</h2>
                 <div class="result-item">
                     <p>Horarios de autodesarrollos</p>
-                    <img src="horarios/autodesarrollo/autodesarrollo.jpg" alt="Autodesarrollos">
+                    <img src="horarios/autodesarrollo/autodesarrollo.png" alt="Autodesarrollos">
                 </div>
             `;
 
