@@ -80,7 +80,7 @@ const decanatos_carreras = {
         economia_3: ["m01", "t01"],
         administracion_contaduria_1: ["m01", "m02", "m03", "m04", "m05", "m06", "m07", "m08", "m09", "m10", "m11", "t01", "t02", "t03", "n01", "n02"],
         administracion_contaduria_2: ["m01", "m02", "m03", "m04", "m05", "m06", "t01", "t02", "t04", "n01", "n02", "n03", "n04", "n05", "n06"],
-        administracion_contaduria_3: ["m01", "m02", "m03", "m04", "m05", "t01", "t02", "t03", "n01", "n02", "n03"],
+        administracion_contaduria_3: ["m01", "m02", "m03", "m04", "m05", "t01", "t02", "n01", "n02", "n03"],
         administracion_contaduria_4: ["m01", "m02", "m03", "t01", "n01", "n02", "n03"],
         administracion_contaduria_5: ["m01", "m02", "n01", "n02"],
         administracion_contaduria_6: ["m01", "m02", "m03", "n01", "n02"],
@@ -90,15 +90,6 @@ const decanatos_carreras = {
         contaduria_8: ['m01', "m02", "m03", 'n01', 'n02', 'n04'],
         contaduria_9: ["m01", "m02", "m03", "n01", "n02", "n03"],
         administracion_9: ["m01", "m02", "m03", "t01", "n01", "n03"],
-    },
-    deha: {
-        desarrollo_humano_1: ["m01", "m02"],
-        desarrollo_humano_2: ["m01", "t01"],
-        desarrollo_humano_3: ["m01"],
-        psicologia_1: ["seccion_1", "seccion_2", "seccion_3", "seccion_4", "seccion_5", "seccion_lab"],
-        psicologia_2: ["seccion_1", "seccion_2", "seccion_3"],
-        psicologia_3: ["seccion_1", "seccion_2", "seccion_3", "seccion_4"],
-        psiscologia_4: ["seccion_1"],
     }
 }
 const decanato_carrera = {
