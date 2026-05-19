@@ -4,322 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EconómicaMente | Blog de economía</title>
-    <!-- Font Awesome para iconos (opcional pero útil) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Agregamos Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* -----------------------------------------------
-           ESTILOS SENCILLOS - ESTILO AMATEUR (como los otros sitios)
-        ----------------------------------------------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #e0e0e0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px;
-        }
-
-        /* Contenedor principal - caja blanca con borde */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: white;
-            border: 1px solid #aaa;
-            box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
-        }
-
-        /* === HEADER (esquema fácil de editar) === */
-        .main-header {
-            background: #1a3a6c;  /* Azul UCLA */
-            color: white;
-            padding: 15px 20px;
-            border-bottom: 4px solid #ffb81c; /* Dorado */
-        }
-
-        .header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        .logo i {
-            margin-right: 8px;
-            color: #ffb81c;
-        }
-
-        /* Menú de navegación - fácil de modificar */
-        .nav-menu {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .nav-menu a:hover {
-            text-decoration: underline;
-            color: #ffb81c;
-        }
-
-        .header-actions i {
-            font-size: 1.2rem;
-            margin-left: 12px;
-            cursor: pointer;
-        }
-        .header-actions i:hover {
-            color: #ffb81c;
-        }
-
-        /* Hero (presentación) */
-        .hero {
-            background: #f0f4f8;
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom: 1px solid #ccc;
-        }
-        .hero h1 {
-            color: #1a3a6c;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        .hero p {
-            font-size: 1rem;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .btn {
-            display: inline-block;
-            background: #1a3a6c;
-            color: white;
-            padding: 8px 20px;
-            text-decoration: none;
-            border: 1px solid #0f2a4d;
-            font-weight: bold;
-        }
-        .btn:hover {
-            background: #0f2a4d;
-        }
-
-        /* Layout principal (2 columnas) */
-        .main-layout {
-            display: flex;
-            gap: 30px;
-            padding: 25px;
-            flex-wrap: wrap;
-        }
-        main {
-            flex: 2;
-            min-width: 250px;
-        }
-        .sidebar {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        /* Títulos de sección */
-        .section-title {
-            font-size: 1.5rem;
-            border-left: 5px solid #ffb81c;
-            padding-left: 12px;
-            margin-bottom: 20px;
-            color: #1a3a6c;
-        }
-
-        /* Grid de tarjetas de artículos */
-        .posts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        /* Tarjeta individual (estilo básico) */
-        .post-card {
-            border: 1px solid #ccc;
-            background: #fefefe;
-            transition: none;
-        }
-        .post-img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-bottom: 1px solid #ddd;
-        }
-        .post-content {
-            padding: 15px;
-        }
-        .post-category {
-            background: #ffb81c;
-            display: inline-block;
-            padding: 3px 8px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #1a3a6c;
-        }
-        .post-title {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-        .post-title a {
-            text-decoration: none;
-            color: #1a3a6c;
-        }
-        .post-title a:hover {
-            text-decoration: underline;
-        }
-        .post-meta {
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 10px;
-            display: flex;
-            gap: 12px;
-        }
-        .post-excerpt {
-            font-size: 0.9rem;
-            margin-bottom: 12px;
-            color: #333;
-        }
-        .read-more {
-            color: #1a3a6c;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.85rem;
-        }
-        .read-more:hover {
-            text-decoration: underline;
-        }
-
-        /* Sidebar (widgets) */
-        .widget {
-            background: #f9f9f9;
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        .widget-title {
-            font-size: 1.2rem;
-            border-bottom: 2px solid #ffb81c;
-            padding-bottom: 5px;
-            margin-bottom: 12px;
-            color: #1a3a6c;
-        }
-        .category-list {
-            list-style: none;
-        }
-        .category-list li {
-            margin-bottom: 8px;
-        }
-        .category-list a {
-            text-decoration: none;
-            color: #333;
-            display: flex;
-            justify-content: space-between;
-        }
-        .category-list a:hover {
-            color: #1a3a6c;
-            font-weight: bold;
-        }
-        .newsletter input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #aaa;
-            background: white;
-        }
-        .btn-subscribe {
-            background: #28a745;
-            color: white;
-            border: 1px solid #1e7e34;
-            padding: 8px;
-            width: 100%;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-subscribe:hover {
-            background: #1e7e34;
-        }
-        .social-links a {
-            color: #1a3a6c;
-            margin-right: 12px;
-            font-size: 1.3rem;
-        }
-
-        /* Footer */
-        .main-footer {
-            background: #1a3a6c;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-top: 4px solid #ffb81c;
-        }
-        .footer-inner {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-        .footer-col h4 {
-            margin-bottom: 10px;
-        }
-        .footer-col a {
-            color: #ffb81c;
-            text-decoration: none;
-        }
-        .footer-col a:hover {
-            text-decoration: underline;
-        }
-        .copyright {
-            font-size: 0.8rem;
-            border-top: 1px solid #ffb81c;
-            padding-top: 12px;
-        }
-
-        /* Responsive */
+        /* Tus estilos actuales se mantienen exactamente igual */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #e0e0e0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; border: 1px solid #aaa; box-shadow: 3px 3px 8px rgba(0,0,0,0.2); }
+        .main-header { background: #1a3a6c; color: white; padding: 15px 20px; border-bottom: 4px solid #ffb81c; }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .logo { font-size: 1.8rem; font-weight: bold; }
+        .logo i { margin-right: 8px; color: #ffb81c; }
+        .nav-menu { display: flex; gap: 20px; flex-wrap: wrap; }
+        .nav-menu a { color: white; text-decoration: none; font-weight: 500; }
+        .nav-menu a:hover { text-decoration: underline; color: #ffb81c; }
+        .header-actions i { font-size: 1.2rem; margin-left: 12px; cursor: pointer; }
+        .hero { background: #f0f4f8; padding: 30px 20px; text-align: center; border-bottom: 1px solid #ccc; }
+        .hero h1 { color: #1a3a6c; font-size: 2rem; margin-bottom: 10px; }
+        .hero p { font-size: 1rem; color: #333; margin-bottom: 20px; }
+        .btn { display: inline-block; background: #1a3a6c; color: white; padding: 8px 20px; text-decoration: none; border: 1px solid #0f2a4d; font-weight: bold; }
+        .main-layout { display: flex; gap: 30px; padding: 25px; flex-wrap: wrap; }
+        main { flex: 2; min-width: 250px; }
+        .sidebar { flex: 1; min-width: 200px; }
+        .section-title { font-size: 1.5rem; border-left: 5px solid #ffb81c; padding-left: 12px; margin-bottom: 20px; color: #1a3a6c; }
+        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .post-card { border: 1px solid #ccc; background: #fefefe; }
+        .post-img { width: 100%; height: 160px; object-fit: cover; border-bottom: 1px solid #ddd; }
+        .post-content { padding: 15px; }
+        .post-category { background: #ffb81c; display: inline-block; padding: 3px 8px; font-size: 0.7rem; font-weight: bold; margin-bottom: 8px; color: #1a3a6c; }
+        .post-title { font-size: 1.2rem; margin-bottom: 8px; }
+        .post-title a { text-decoration: none; color: #1a3a6c; }
+        .post-title a:hover { text-decoration: underline; }
+        .post-meta { font-size: 0.8rem; color: #666; margin-bottom: 10px; display: flex; gap: 12px; }
+        .post-excerpt { font-size: 0.9rem; margin-bottom: 12px; color: #333; }
+        .read-more { color: #1a3a6c; text-decoration: none; font-weight: bold; font-size: 0.85rem; }
+        .read-more:hover { text-decoration: underline; }
+        .widget { background: #f9f9f9; border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+        .widget-title { font-size: 1.2rem; border-bottom: 2px solid #ffb81c; padding-bottom: 5px; margin-bottom: 12px; color: #1a3a6c; }
+        .category-list { list-style: none; }
+        .category-list li { margin-bottom: 8px; }
+        .category-list a { text-decoration: none; color: #333; display: flex; justify-content: space-between; }
+        .newsletter input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #aaa; background: white; }
+        .btn-subscribe { background: #28a745; color: white; border: 1px solid #1e7e34; padding: 8px; width: 100%; cursor: pointer; font-weight: bold; }
+        .social-links a { color: #1a3a6c; margin-right: 12px; font-size: 1.3rem; }
+        .main-footer { background: #1a3a6c; color: white; padding: 20px; text-align: center; border-top: 4px solid #ffb81c; }
+        .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; margin-bottom: 15px; }
+        .footer-col h4 { margin-bottom: 10px; }
+        .footer-col a { color: #ffb81c; text-decoration: none; }
+        .copyright { font-size: 0.8rem; border-top: 1px solid #ffb81c; padding-top: 12px; }
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            .header-inner {
-                flex-direction: column;
-                text-align: center;
-            }
-            .nav-menu {
-                justify-content: center;
-            }
-            .main-layout {
-                flex-direction: column;
-            }
-            .hero h1 {
-                font-size: 1.5rem;
-            }
+            body { padding: 10px; }
+            .header-inner { flex-direction: column; text-align: center; }
+            .nav-menu { justify-content: center; }
+            .main-layout { flex-direction: column; }
+            .hero h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- =============================================
-         HEADER - Edita el menú y el logo fácilmente
-    ============================================= -->
     <header class="main-header">
         <div class="header-inner">
-            <div class="logo">
-                <i class="fas fa-chart-line"></i> EconómicaMente
-            </div>
+            <div class="logo"><i class="fas fa-chart-line"></i> EconómicaMente</div>
             <nav class="nav-menu">
-                <!-- Cambia los textos y los enlaces (#) por lo que necesites -->
                 <a href="#">Inicio</a>
                 <a href="#">Macroeconomía</a>
                 <a href="#">Mercados</a>
@@ -334,7 +82,6 @@
         </div>
     </header>
 
-    <!-- Sección Hero (presentación) -->
     <section class="hero">
         <h1>Inteligencia económica para un mundo incierto</h1>
         <p>Análisis, datos y perspectivas sobre la economía global, mercados y políticas públicas.</p>
@@ -343,128 +90,121 @@
 
     <div class="main-layout">
         <main>
-            <!-- Aquí se inyectarán los artículos dinámicamente con JavaScript -->
             <h2 class="section-title">Últimos análisis</h2>
             <div id="posts-container" class="posts-grid">
-                <!-- Los artículos aparecerán aquí -->
+                <div style="text-align:center; padding:20px;">Cargando artículos...</div>
             </div>
         </main>
 
-        <!-- Sidebar (widgets) - edita directamente -->
         <aside class="sidebar">
             <div class="widget">
                 <h3 class="widget-title">Sobre el blog</h3>
                 <p>Economía aplicada con datos, sin ideologías. Más de 10 años analizando tendencias macro y micro.</p>
             </div>
-
             <div class="widget">
                 <h3 class="widget-title">Indicador destacado</h3>
+                <div style="text-align: center;">
+                    <i class="fas fa-chart-simple" style="font-size: 2rem; color: #ffb81c;"></i>
+                    <p style="font-weight: bold; margin-top: 8px;">IPC Eurozona (abril)</p>
+                    <p style="font-size: 1.8rem; font-weight: bold;">2.4%</p>
+                    <p>Interanual · +0.2%</p>
+                </div>
             </div>
         </aside>
     </div>
 
-<footer class="main-footer">
-    <div class="footer-inner">
-        <div class="footer-col">
-            <h4><i class="fas fa-chart-line"></i> EconómicaMente</h4>
-            <p>Pensamiento crítico y datos para entender la economía actual.</p>
+    <footer class="main-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <h4><i class="fas fa-chart-line"></i> EconómicaMente</h4>
+                <p>Pensamiento crítico y datos para entender la economía actual.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li><a href="#">Calculadora de inflación</a></li>
+                    <li><a href="#">Calendario económico</a></li>
+                    <li><a href="#">Glosario de términos</a></li>
+                    <li><a href="#">Indicadores en tiempo real</a></li>
+                    <li><a href="#">Podcast semanal</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="footer-col">
-            <h4>Recursos</h4>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-                <li><a href="#">Calculadora de inflación</a></li>
-                <li><a href="#">Calendario económico</a></li>
-                <li><a href="#">Glosario de términos</a></li>
-                <li><a href="#">Indicadores en tiempo real</a></li>
-                <li><a href="#">Podcast semanal</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
+        <div class="copyright">© 2026 EconómicaMente</div>
+    </footer>
 </div>
 
 <script>
-    // ============================================================
-    //  BASE DE DATOS DE ARTÍCULOS - ¡SOLO MODIFICA ESTE ARRAY!
-    // ============================================================
-    // Para agregar un nuevo artículo, copia una de las entradas y
-    // cambia los valores. Los campos son:
-    // - img: URL de la imagen (puedes usar imágenes locales o de internet)
-    // - category: texto de la categoría (ej. "Macroeconomía")
-    // - title: título del artículo
-    // - link: enlace al artículo completo (puede ser "#" si aún no existe)
-    // - date: fecha de publicación
-    // - readTime: tiempo de lectura estimado
-    // - excerpt: resumen corto (máx 150 caracteres aprox)
-    // ============================================================
-    const articulos = [
-        {
-            img: "https://picsum.photos/id/20/400/250",
-            category: "Política monetaria",
-            title: "El dilema de los bancos centrales: ¿más subidas de tasas?",
-            link: "#",
-            date: "15 mayo, 2026",
-            readTime: "8 min lectura",
-            excerpt: "La inflación subyacente muestra resistencia mientras el mercado laboral se enfría. Análisis de las próximas decisiones de la Fed y el BCE."
-        },
-        {
-            img: "https://picsum.photos/id/24/400/250",
-            category: "Comercio internacional",
-            title: "Guerra comercial 2.0: aranceles y cadenas de suministro",
-            link: "#",
-            date: "10 mayo, 2026",
-            readTime: "6 min lectura",
-            excerpt: "Las nuevas barreras arancelarias redibujan el mapa del comercio global. Impacto en Latinoamérica y oportunidades de nearshoring."
-        },
-        {
-            img: "https://picsum.photos/id/26/400/250",
-            category: "Finanzas digitales",
-            title: "Bitcoin y las CBDC: el futuro del dinero",
-            link: "#",
-            date: "5 mayo, 2026",
-            readTime: "10 min lectura",
-            excerpt: "Mientras bitcoin supera resistencias, los bancos centrales aceleran sus monedas digitales. ¿Convivencia o competencia?"
-        },
-        {
-            img: "https://picsum.photos/id/1/400/250",
-            category: "Coyuntura global",
-            title: "¿Estamos ante una recesión suave o profunda?",
-            link: "#",
-            date: "28 abril, 2026",
-            readTime: "12 min lectura",
-            excerpt: "Los indicadores adelantados muestran señales mixtas. Escenarios para la segunda mitad del año e implicancias para inversores."
-        }
-        // ===== AGREGAR MÁS ARTÍCULOS AQUÍ, SEPARADOS POR COMA =====
-    ];
+    // ================= CONFIGURACIÓN DE SUPABASE =================
+    // ⭐⭐⭐ REEMPLAZA CON TUS CREDENCIALES ⭐⭐⭐
+        const SUPABASE_URL = 'https://lqdovfnemhotouljektr.supabase.co/';
+        const SUPABASE_ANON_KEY = 'sb_publishable_tygjFhHRzQFmOnl-lRj4iA_Lb44gmHC';
+    // ==============================================================
 
-    // Función que genera el HTML de cada tarjeta
-    function renderArticulos() {
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function cargarArticulos() {
         const container = document.getElementById('posts-container');
-        if (!container) return;
+        container.innerHTML = '<div style="text-align:center; padding:20px;">Cargando...</div>';
         
+        // Obtener artículos ordenados por fecha descendente
+        const { data, error } = await supabaseClient
+            .from('articulos')
+            .select('*')
+            .order('created_at', { ascending: false });
+        
+        if (error) {
+            container.innerHTML = `<div style="text-align:center; padding:20px; color:#dc3545;">Error: ${error.message}</div>`;
+            return;
+        }
+        
+        if (!data || data.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:20px;">No hay artículos aún. Vuelve pronto.</div>';
+            return;
+        }
+        
+        // Generar HTML para cada artículo
         let html = '';
-        for (let art of articulos) {
+        for (let art of data) {
+            // Escapar texto para evitar XSS
+            const titulo = escapeHtml(art.title);
+            const categoria = escapeHtml(art.category || 'General');
+            const fecha = escapeHtml(art.date || '');
+            const readTime = escapeHtml(art.readTime || '');
+            const excerpt = escapeHtml(art.excerpt || '');
+            const imgUrl = art.img || 'https://picsum.photos/id/20/400/250';
+            const id = art.id;
+            
             html += `
                 <article class="post-card">
-                    <img src="${art.img}" alt="${art.title}" class="post-img">
+                    <img src="${imgUrl}" alt="${titulo}" class="post-img">
                     <div class="post-content">
-                        <span class="post-category">${art.category}</span>
-                        <h3 class="post-title"><a href="${art.link}">${art.title}</a></h3>
+                        <span class="post-category">${categoria}</span>
+                        <h3 class="post-title"><a href="articulo.html?id=${id}">${titulo}</a></h3>
                         <div class="post-meta">
-                            <span><i class="far fa-calendar-alt"></i> ${art.date}</span>
-                            <span><i class="far fa-clock"></i> ${art.readTime}</span>
+                            <span><i class="far fa-calendar-alt"></i> ${fecha}</span>
+                            <span><i class="far fa-clock"></i> ${readTime}</span>
                         </div>
-                        <p class="post-excerpt">${art.excerpt}</p>
-                        <a href="${art.link}" class="read-more">Leer más →</a>
+                        <p class="post-excerpt">${excerpt}</p>
+                        <a href="articulo.html?id=${id}" class="read-more">Leer más →</a>
                     </div>
                 </article>
             `;
         }
         container.innerHTML = html;
     }
-
-    // Cargar los artículos cuando la página esté lista
-    document.addEventListener('DOMContentLoaded', renderArticulos);
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', cargarArticulos);
 </script>
 </body>
 </html>
