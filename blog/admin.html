@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Blog - EconómicaMente</title>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #aaa;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #1a3a6c;
+            border-bottom: 2px solid #ffb81c;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+        .login-box, .admin-panel {
+            display: none;
+        }
+        .login-box.active, .admin-panel.active {
+            display: block;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #aaa;
+            background: white;
+            font-family: inherit;
+        }
+        button {
+            background: #1a3a6c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        button.danger {
+            background: #dc3545;
+        }
+        button.success {
+            background: #28a745;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #1a3a6c;
+            color: white;
+        }
+        .acciones button {
+            margin-right: 5px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+        }
+        .formulario-edicion {
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .mensaje {
+            padding: 10px;
+            margin-bottom: 15px;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: none;
+        }
+        .error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Panel de Administración - EconómicaMente</h1>
+
+    <!-- Login -->
+    <div id="loginBox" class="login-box active">
+        <h2>Iniciar sesión</h2>
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button id="btnLogin">Entrar</button>
+        <div id="loginMsg" class="mensaje"></div>
+    </div>
+
+    <!-- Panel Admin (sale después del login) -->
+    <div id="adminPanel" class="admin-panel">
+        <button id="btnLogout">Cerrar sesión</button>
+        <hr style="margin: 15px 0;">
+
+        <!-- Formulario para agregar/editar -->
+        <div class="formulario-edicion">
+            <h2 id="formTitle">Agregar nuevo artículo</h2>
+            <input type="hidden" id="editId">
+            <label>Título</label>
+            <input type="text" id="title" placeholder="Título del artículo">
+            <label>Categoría</label>
+            <input type="text" id="category" placeholder="Ej: Macroeconomía">
+            <label>Fecha (formato: 15 mayo, 2026)</label>
+            <input type="text" id="date" placeholder="15 mayo, 2026">
+            <label>Tiempo de lectura (ej: 8 min lectura)</label>
+            <input type="text" id="readTime" placeholder="8 min lectura">
+            <label>Extracto (resumen corto)</label>
+            <textarea id="excerpt" rows="3" placeholder="Resumen del artículo..."></textarea>
+            <label>URL de la imagen</label>
+            <input type="text" id="img" placeholder="https://...">
+            <label>Enlace al artículo completo</label>
+            <input type="text" id="link" placeholder="https://... o #">
+            <div>
+                <button id="btnSave">Guardar artículo</button>
+                <button id="btnCancel" class="danger">Cancelar edición</button>
+            </div>
+        </div>
+
+        <!-- Listado de artículos -->
+        <h2>Artículos existentes</h2>
+        <div id="mensajeListado" class="mensaje"></div>
+        <table id="tablaArticulos">
+            <thead>
+                <tr><th>ID</th><th>Título</th><th>Categoría</th><th>Fecha</th><th>Acciones</th></tr>
+            </thead>
+            <tbody id="tbodyArticulos"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // ================= CONFIGURACIÓN =================
+    // REEMPLAZA con los datos de tu proyecto Supabase
+    const SUPABASE_URL = 'https://lqdovfnemhotouljektr.supabase.co/articulos';
+    const SUPABASE_ANON_KEY = 'sb_publishable_tygjFhHRzQFmOnl-lRj4iA_Lb44gmHC';
+    
+    // Mapeo de campos del formulario (id del input) a columna en la tabla
+    const campoMap = {
+        title: 'title',
+        category: 'category',
+        date: 'date',
+        readTime: 'readTime',
+        excerpt: 'excerpt',
+        img: 'img',
+        link: 'link'
+    };
+    // =================================================
+
+    let supabase;
+    let currentUser = null;
+
+    // Inicializar Supabase
+    function initSupabase() {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    // Mostrar mensaje temporal
+    function mostrarMensaje(elementId, texto, esError = false) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        el.textContent = texto;
+        el.className = 'mensaje' + (esError ? ' error' : '');
+        el.style.display = 'block';
+        setTimeout(() => {
+            el.style.display = 'none';
+        }, 3000);
+    }
+
+    // Cargar lista de artículos
+    async function cargarArticulos() {
+        const { data, error } = await supabase
+            .from('articulos')
+            .select('*')
+            .order('created_at', { ascending: false });
+        if (error) {
+            mostrarMensaje('mensajeListado', 'Error al cargar: ' + error.message, true);
+            return;
+        }
+        const tbody = document.getElementById('tbodyArticulos');
+        tbody.innerHTML = '';
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5">No hay artículos aún. Crea uno con el formulario.</td></tr>';
+            return;
+        }
+        data.forEach(art => {
+            const row = tbody.insertRow();
+            row.insertCell(0).textContent = art.id;
+            row.insertCell(1).textContent = art.title || '';
+            row.insertCell(2).textContent = art.category || '';
+            row.insertCell(3).textContent = art.date || '';
+            const acciones = row.insertCell(4);
+            acciones.className = 'acciones';
+            const btnEdit = document.createElement('button');
+            btnEdit.textContent = 'Editar';
+            btnEdit.style.background = '#ffc107';
+            btnEdit.style.color = '#000';
+            btnEdit.onclick = () => cargarArticuloParaEditar(art);
+            const btnDelete = document.createElement('button');
+            btnDelete.textContent = 'Eliminar';
+            btnDelete.className = 'danger';
+            btnDelete.onclick = () => eliminarArticulo(art.id);
+            acciones.appendChild(btnEdit);
+            acciones.appendChild(btnDelete);
+        });
+    }
+
+    // Cargar datos en el formulario para editar
+    function cargarArticuloParaEditar(articulo) {
+        document.getElementById('formTitle').textContent = 'Editar artículo';
+        document.getElementById('editId').value = articulo.id;
+        document.getElementById('title').value = articulo.title || '';
+        document.getElementById('category').value = articulo.category || '';
+        document.getElementById('date').value = articulo.date || '';
+        document.getElementById('readTime').value = articulo.readTime || '';
+        document.getElementById('excerpt').value = articulo.excerpt || '';
+        document.getElementById('img').value = articulo.img || '';
+        document.getElementById('link').value = articulo.link || '';
+        // Scroll al formulario
+        document.querySelector('.formulario-edicion').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Guardar (insert o update)
+    async function guardarArticulo() {
+        const id = document.getElementById('editId').value;
+        const datos = {};
+        for (const [inputId, colName] of Object.entries(campoMap)) {
+            datos[colName] = document.getElementById(inputId).value;
+        }
+        // Validar título al menos
+        if (!datos.title) {
+            mostrarMensaje('mensajeListado', 'El título es obligatorio', true);
+            return;
+        }
+
+        let result;
+        if (id) {
+            // Actualizar
+            result = await supabase.from('articulos').update(datos).eq('id', id);
+        } else {
+            // Insertar
+            result = await supabase.from('articulos').insert([datos]);
+        }
+        if (result.error) {
+            mostrarMensaje('mensajeListado', 'Error al guardar: ' + result.error.message, true);
+        } else {
+            mostrarMensaje('mensajeListado', 'Artículo guardado correctamente');
+            limpiarFormulario();
+            cargarArticulos();
+        }
+    }
+
+    async function eliminarArticulo(id) {
+        if (!confirm('¿Eliminar este artículo permanentemente?')) return;
+        const { error } = await supabase.from('articulos').delete().eq('id', id);
+        if (error) {
+            mostrarMensaje('mensajeListado', 'Error al eliminar: ' + error.message, true);
+        } else {
+            mostrarMensaje('mensajeListado', 'Artículo eliminado');
+            cargarArticulos();
+        }
+    }
+
+    function limpiarFormulario() {
+        document.getElementById('formTitle').textContent = 'Agregar nuevo artículo';
+        document.getElementById('editId').value = '';
+        document.getElementById('title').value = '';
+        document.getElementById('category').value = '';
+        document.getElementById('date').value = '';
+        document.getElementById('readTime').value = '';
+        document.getElementById('excerpt').value = '';
+        document.getElementById('img').value = '';
+        document.getElementById('link').value = '';
+    }
+
+    // Autenticación
+    async function login(email, password) {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+            mostrarMensaje('loginMsg', 'Error: ' + error.message, true);
+            return false;
+        }
+        currentUser = data.user;
+        return true;
+    }
+
+    async function logout() {
+        await supabase.auth.signOut();
+        currentUser = null;
+        document.getElementById('loginBox').classList.add('active');
+        document.getElementById('adminPanel').classList.remove('active');
+        limpiarFormulario();
+    }
+
+    async function verificarSesion() {
+        const { data } = await supabase.auth.getSession();
+        if (data.session) {
+            currentUser = data.session.user;
+            document.getElementById('loginBox').classList.remove('active');
+            document.getElementById('adminPanel').classList.add('active');
+            cargarArticulos();
+        } else {
+            document.getElementById('loginBox').classList.add('active');
+            document.getElementById('adminPanel').classList.remove('active');
+        }
+    }
+
+    // Eventos
+    document.getElementById('btnLogin').onclick = async () => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        if (!email || !pass) {
+            mostrarMensaje('loginMsg', 'Ingrese email y contraseña', true);
+            return;
+        }
+        const ok = await login(email, pass);
+        if (ok) {
+            await verificarSesion();
+        }
+    };
+    document.getElementById('btnLogout').onclick = () => logout();
+    document.getElementById('btnSave').onclick = () => guardarArticulo();
+    document.getElementById('btnCancel').onclick = () => limpiarFormulario();
+
+    // Inicializar
+    initSupabase();
+    verificarSesion();
+</script>
+</body>
+</html>
