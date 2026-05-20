@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+}
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid #aaa;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+    padding: 20px;
+}
+h1, h2 {
+    color: #1a3a6c;
+    border-bottom: 2px solid #ffb81c;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+input, textarea, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #aaa;
+    background: white;
+    font-family: inherit;
+}
+textarea {
+    font-family: monospace;
+}
+button {
+    background: #1a3a6c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+button.danger {
+    background: #dc3545;
+}
+button.success {
+    background: #28a745;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+th {
+    background: #1a3a6c;
+    color: white;
+}
+.formulario-edicion {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.mensaje {
+    padding: 10px;
+    margin-bottom: 15px;
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    display: none;
+}
+.error {
+    background: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+}
+#editor-container {
+    height: 400px;
+    margin-bottom: 12px;
+}
+.img-preview {
+    max-width: 200px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    padding: 4px;
+}
+.img-preview img {
+    max-width: 100%;
+}
