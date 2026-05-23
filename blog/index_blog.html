@@ -1,106 +1,117 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EconómicaMente | Blog de economía</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="sources/index_blog.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="sources/index_blog.js" defer></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>EconómicaMente | Blog de economía</title>
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="sources/index_blog.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="sources/index_blog.js" defer></script>
+    </head>
 
-<body>
-    <div class="container">
-        <header class="main-header">
-            <div class="header-inner">
-                <div class="logo">
-                    <i class="fas fa-chart-line"></i> EconómicaMente
-                </div>
-                <nav class="nav-menu">
-                    <!-- Solo tres elementos -->
-                    <a href="index_blog.html">Inicio</a>
-
-                    <!-- Dropdown de Categorías (dinámico desde Supabase) -->
-                    <div class="dropdown">
-                        <span class="dropbtn">Categorías ▼</span>
-                        <div class="dropdown-content" id="categoriasDropdown">
-                            <span>Cargando...</span>
-                        </div>
+    <body>
+        <div class="container">
+            <header class="main-header">
+                <div class="header-inner">
+                    <div class="logo">
+                        <i class="fas fa-chart-line"></i> EconómicaMente
                     </div>
+                    <nav class="nav-menu">
+                        <!-- Solo tres elementos -->
+                        <a href="index_blog.html">Inicio</a>
 
-                    <!-- Dropdown de Recursos (estático) -->
-                    <div class="dropdown">
-                        <span class="dropbtn">Recursos ▼</span>
-                        <div class="dropdown-content">
-                            <span>Calculadora de inflación</span>
-                            <span>Calendario económico</span>
-                            <span>Glosario de términos</span>
-                            <span>Indicadores en tiempo real</span>
-                            <span>Podcast semanal</span>
+                        <!-- Dropdown de Categorías (dinámico desde Supabase) -->
+                        <div class="dropdown">
+                            <span class="dropbtn">Categorías ▼</span>
+                            <div class="dropdown-content"
+                                id="categoriasDropdown">
+                                <span>Cargando...</span>
+                            </div>
                         </div>
+
+                        <!-- Dropdown de Recursos (estático) -->
+                        <div class="dropdown">
+                            <span class="dropbtn">Recursos ▼</span>
+                            <div class="dropdown-content">
+                                <span>Calculadora de inflación</span>
+                                <span>Calendario económico</span>
+                                <span>Glosario de términos</span>
+                                <span>Indicadores en tiempo real</span>
+                                <span>Podcast semanal</span>
+                            </div>
+                        </div>
+                    </nav>
+                    <div class="header-actions">
+                        <i class="fas fa-search"></i>
+                        <i class="fas fa-user-circle"></i>
                     </div>
-                </nav>
-                <div class="header-actions">
-                    <i class="fas fa-search"></i>
-                    <i class="fas fa-user-circle"></i>
                 </div>
+            </header>
+
+            <section class="hero">
+                <h1>Inteligencia económica para un mundo incierto</h1>
+                <p>Análisis, datos y perspectivas sobre la economía global,
+                    mercados y políticas públicas.</p>
+                <a href="#" class="btn">Explorar artículos <i
+                        class="fas fa-arrow-right"></i></a>
+            </section>
+
+            <div class="main-layout">
+                <main>
+                    <h2 class="section-title">Últimos análisis</h2>
+                    <div id="posts-container" class="posts-grid">
+                        <div style="text-align:center; padding:20px;">Cargando
+                            artículos...</div>
+                    </div>
+                </main>
+
+                <aside class="sidebar">
+                    <div class="widget">
+                        <h3 class="widget-title">Sobre el blog</h3>
+                        <p>Economía aplicada con datos, sin ideologías
+                        </p>
+                    </div>
+                    <div class="widget" id="dolar-widget">
+                        <h3 class="widget-title">💵 Tipo de Cambio
+                            (Venezuela)</h3>
+                        <div id="dolar-precio">
+                            <i class="fas fa-spinner fa-spin"></i> Cargando...
+                        </div>
+                        <div id="dolar-actualizado"
+                            style="font-size: 0.7rem; margin-top: 5px; color: #666;"></div>
+                        <div id="brecha-cambiariax"
+                            style="font-size: 0.7rem; margin-top: 5px; color: #666;"></div>
+
+                    </div>
+                </aside>
             </div>
-        </header>
 
-        <section class="hero">
-            <h1>Inteligencia económica para un mundo incierto</h1>
-            <p>Análisis, datos y perspectivas sobre la economía global, mercados y políticas públicas.</p>
-            <a href="#" class="btn">Explorar artículos <i class="fas fa-arrow-right"></i></a>
-        </section>
-
-        <div class="main-layout">
-            <main>
-                <h2 class="section-title">Últimos análisis</h2>
-                <div id="posts-container" class="posts-grid">
-                    <div style="text-align:center; padding:20px;">Cargando artículos...</div>
-                </div>
-            </main>
-
-            <aside class="sidebar">
-                <div class="widget">
-                    <h3 class="widget-title">Sobre el blog</h3>
-                    <p>Economía aplicada con datos, sin ideologías. Más de 10 años analizando tendencias macro y micro.
-                    </p>
-                </div>
-                <div class="widget">
-                    <h3 class="widget-title">Indicador destacado</h3>
-                    <div style="text-align: center;">
-                        <i class="fas fa-chart-simple" style="font-size: 2rem; color: #ffb81c;"></i>
-                        <p style="font-weight: bold; margin-top: 8px;">IPC Eurozona (abril)</p>
-                        <p style="font-size: 1.8rem; font-weight: bold;">2.4%</p>
-                        <p>Interanual · +0.2%</p>
+            <footer class="main-footer">
+                <div class="footer-inner">
+                    <div class="footer-col">
+                        <h4><i class="fas fa-chart-line"></i>
+                            EconómicaMente</h4>
+                        <p>Pensamiento crítico y datos para entender la economía
+                            actual.</p>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Recursos</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li><a href="#">Calculadora de inflación</a></li>
+                            <li><a href="#">Calendario económico</a></li>
+                            <li><a href="#">Glosario de términos</a></li>
+                            <li><a href="#">Indicadores en tiempo real</a></li>
+                            <li><a href="#">Podcast semanal</a></li>
+                        </ul>
                     </div>
                 </div>
-            </aside>
+                <div class="copyright">© 2026 EconómicaMente</div>
+            </footer>
         </div>
-
-        <footer class="main-footer">
-            <div class="footer-inner">
-                <div class="footer-col">
-                    <h4><i class="fas fa-chart-line"></i> EconómicaMente</h4>
-                    <p>Pensamiento crítico y datos para entender la economía actual.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Recursos</h4>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li><a href="#">Calculadora de inflación</a></li>
-                        <li><a href="#">Calendario económico</a></li>
-                        <li><a href="#">Glosario de términos</a></li>
-                        <li><a href="#">Indicadores en tiempo real</a></li>
-                        <li><a href="#">Podcast semanal</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">© 2026 EconómicaMente</div>
-        </footer>
-    </div>
-</body>
+    </body>
 
 </html>

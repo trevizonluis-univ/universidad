@@ -1,17 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artículo - EconómicaMente</title>
-    <link rel="stylesheet" href="sources/articulo.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="sources/articulo.js" defer></script>
-</head>
-<body>
-<div class="container">
-    <a href="index_blog.html" class="back-link">← Volver al inicio</a>
-    <div id="articulo"></div>
-</div>
-</body>
-</html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Artículo - EconómicaMente</title>
+        <link rel="stylesheet" href="sources/articulo.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="sources/articulo.js" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <a href="index_blog.html" class="back-link">← Volver al inicio</a>
+            <div id="articulo"></div>
+
+            <!-- Sección de likes -->
+            <div class="likes-section">
+                <button id="likeButton" class="like-btn">❤️ Me gusta</button>
+                <span class="like-count" id="likeCount">0</span>
+            </div>
+
+            <!-- Sección de comentarios -->
+            <div class="comentarios-section">
+                <h3>Comentarios</h3>
+                <div id="comentariosLista"></div>
+                <div class="form-comentario">
+                    <input type="text" id="nombre" placeholder="Tu nombre"
+                        required>
+                    <textarea id="contenido" rows="3"
+                        placeholder="Escribe tu comentario..."></textarea>
+                    <button id="btnEnviarComentario">Enviar comentario</button>
+                </div>
+            </div>
+        </body>
+    </html>

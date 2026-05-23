@@ -1,94 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Blog - EconómicaMente</title>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link rel="stylesheet" href="sources/admin.css">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="sources/admin.js" defer></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Blog - EconómicaMente</title>
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+            rel="stylesheet">
+        <link rel="stylesheet" href="sources/admin.css">
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="sources/admin.js" defer></script>
+    </head>
 
-<body>
-    <div class="container">
-        <h1>Panel de Administración - EconómicaMente</h1>
+    <body>
+        <div class="container">
+            <h1>Panel de Administración - EconómicaMente</h1>
 
-        <!-- Login -->
-        <div id="loginBox">
-            <h2>Iniciar sesión</h2>
-            <input type="email" id="email" placeholder="Correo electrónico">
-            <input type="password" id="password" placeholder="Contraseña">
-            <button id="btnLogin">Entrar</button>
-            <div id="loginMsg" class="mensaje"></div>
+            <!-- Login -->
+            <div id="loginBox">
+                <h2>Iniciar sesión</h2>
+                <input type="email" id="email" placeholder="Correo electrónico">
+                <input type="password" id="password" placeholder="Contraseña">
+                <button id="btnLogin">Entrar</button>
+                <div id="loginMsg" class="mensaje"></div>
+            </div>
+
+            <!-- Panel principal (oculto hasta login) -->
+            <div id="adminPanel" style="display:none;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center;">
+                    <div id="welcomeMessage" style="font-weight: bold;"></div>
+                    <button id="btnLogout">Cerrar sesión</button>
+                </div>
+                <hr style="margin: 15px 0;">
+
+                <!-- Gestión de categorías -->
+                <div class="formulario-edicion" style="margin-bottom:20px;">
+                    <h2>Gestionar Categorías</h2>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <input type="text" id="nuevaCategoria"
+                            placeholder="Nombre de nueva categoría"
+                            style="flex:1;">
+                        <button id="btnAgregarCategoria"
+                            class="success">Agregar</button>
+                    </div>
+                    <div id="listaCategorias"></div>
+                </div>
+
+                <!-- Formulario de artículo -->
+                <div class="formulario-edicion">
+                    <h2 id="formTitle">Agregar nuevo artículo</h2>
+                    <input type="hidden" id="editId">
+                    <label>Título *</label>
+                    <input type="text" id="title"
+                        placeholder="Título del artículo">
+                    <label>Categorías (puedes seleccionar varias)</label>
+                    <div id="categorias-checkboxes"
+                        style="margin-bottom:12px; max-height:150px; overflow-y:auto; border:1px solid #ccc; padding:8px;">
+                    </div>
+                    <button type="button" id="btnNuevaCategoriaArticulo"
+                        style="margin-bottom:12px;">+ Nueva
+                        categoría</button>
+                    <label>Fecha (ej: 15 mayo, 2026)</label>
+                    <input type="text" id="date" placeholder="15 mayo, 2026">
+                    <label>Tiempo de lectura (ej: 8 min lectura)</label>
+                    <input type="text" id="readTime"
+                        placeholder="8 min lectura">
+                    <label>Extracto</label>
+                    <textarea id="excerpt" rows="2"
+                        placeholder="Resumen corto..."></textarea>
+                    <label>Imagen de portada</label>
+                    <input type="file" id="imgFile" accept="image/*">
+                    <div id="imgPreview" class="img-preview"></div>
+                    <input type="hidden" id="imgUrl">
+                    <label>Contenido completo del artículo (HTML)</label>
+                    <div id="editor-container"></div>
+                    <div>
+                        <button id="btnSave" class="success">Guardar
+                            artículo</button>
+                        <button id="btnCancel" class="danger">Cancelar
+                            edición</button>
+                    </div>
+                </div>
+
+                <h2>Artículos existentes</h2>
+                <div id="mensajeListado" class="mensaje"></div>
+                <table id="tablaArticulos">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Categorías</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyArticulos"></tbody>
+                </table>
+            </div>
         </div>
-
-        <!-- Panel principal (oculto hasta login) -->
-        <div id="adminPanel" style="display:none;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div id="welcomeMessage" style="font-weight: bold;"></div>
-                <button id="btnLogout">Cerrar sesión</button>
-            </div>
-            <hr style="margin: 15px 0;">
-
-            <!-- Gestión de categorías -->
-            <div class="formulario-edicion" style="margin-bottom:20px;">
-                <h2>Gestionar Categorías</h2>
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <input type="text" id="nuevaCategoria" placeholder="Nombre de nueva categoría" style="flex:1;">
-                    <button id="btnAgregarCategoria" class="success">Agregar</button>
-                </div>
-                <div id="listaCategorias"></div>
-            </div>
-
-            <!-- Formulario de artículo -->
-            <div class="formulario-edicion">
-                <h2 id="formTitle">Agregar nuevo artículo</h2>
-                <input type="hidden" id="editId">
-                <label>Título *</label>
-                <input type="text" id="title" placeholder="Título del artículo">
-                <label>Categorías (puedes seleccionar varias)</label>
-                <div id="categorias-checkboxes"
-                    style="margin-bottom:12px; max-height:150px; overflow-y:auto; border:1px solid #ccc; padding:8px;">
-                </div>
-                <button type="button" id="btnNuevaCategoriaArticulo" style="margin-bottom:12px;">+ Nueva
-                    categoría</button>
-                <label>Fecha (ej: 15 mayo, 2026)</label>
-                <input type="text" id="date" placeholder="15 mayo, 2026">
-                <label>Tiempo de lectura (ej: 8 min lectura)</label>
-                <input type="text" id="readTime" placeholder="8 min lectura">
-                <label>Extracto</label>
-                <textarea id="excerpt" rows="2" placeholder="Resumen corto..."></textarea>
-                <label>Imagen de portada</label>
-                <input type="file" id="imgFile" accept="image/*">
-                <div id="imgPreview" class="img-preview"></div>
-                <input type="hidden" id="imgUrl">
-                <label>Contenido completo del artículo (HTML)</label>
-                <div id="editor-container"></div>
-                <div>
-                    <button id="btnSave" class="success">Guardar artículo</button>
-                    <button id="btnCancel" class="danger">Cancelar edición</button>
-                </div>
-            </div>
-
-            <h2>Artículos existentes</h2>
-            <div id="mensajeListado" class="mensaje"></div>
-            <table id="tablaArticulos">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Categorías</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tbodyArticulos"></tbody>
-            </table>
-        </div>
-    </div>
-</body>
+    </body>
 
 </html>
