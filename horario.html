@@ -29,7 +29,7 @@
             <div class="info-box">
                 SE RECOMIENDA UTILIZAR EL MODO<br>
                 "SITIO PARA COMPUTADORA" SI ESTA EN TELEFONO MOVIL<br>
-                NO REINICIE LA PAGINA, PUEDEN PERDER SUS HORARIOS<br>
+                SUS HORARIOS SE GUARDAN AUTOMATICAMENTE EN ESTE NAVEGADOR<br>
                 <a class="important-link" target="_blank" href="https://www.youtube.com/watch?v=4lh2IbDsCBs">
                     (Si no sabe como activar el modo computadora o
                     escritorio, haga click aquí)
@@ -110,12 +110,6 @@
                         <select id="hora_salida" class="form-control"></select>
                     </div>
 
-                    <!-- <div class="form-group">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="espacio" name="espacio" value="true">
-                            <label for="espacio">Espacio libre</label>
-                        </div>
-                    </div> -->
                 </div>
                 <div class="form-group">
                     <label for="color_personalizado"><i class="fa-solid fa-palette"></i> Color personalizado</label>
@@ -129,9 +123,20 @@
                     <button class="btn btn-success" onclick="GenerateScheduleContent()">
                         <i class="fas fa-print"></i> Generar
                     </button>
-                    <button class="btn btn-danger" onclick="limpiar_tabla()">
-                        <i class="fas fa-trash-alt"></i> Limpiar Tabla
-                    </button>
+                    
+                    <div class="danger-action-group">
+                        <select id="opcion_limpiar" class="form-control select-danger">
+                            <option value="">Seleccione qué limpiar...</option>
+                            <option value="m">Limpiar Mañana</option>
+                            <option value="t">Limpiar Tarde</option>
+                            <option value="n">Limpiar Noche</option>
+                            <option value="todo">Borrar Todo</option>
+                        </select>
+                        <button class="btn btn-danger" onclick="ejecutar_limpieza()">
+                            <i class="fas fa-trash-alt"></i> Limpiar
+                        </button>
+                    </div>
+
                     <button class="btn btn-primary" onclick="volverIndex()">
                         <i class="fas fa-save"></i> Volver
                     </button>
@@ -171,7 +176,7 @@
                                     <td class="hora-col">10:35-11:20</td>
                                 </tr>
                                 <tr id="6m">
-                                    <td class="hora-col">11:25-12:05</td>
+                                    <td class="hora-col">11:20-12:05</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -16,27 +16,20 @@
             <div class="header-bg"></div>
             <div class="header-content">
                 <div class="logo-container">
-                    <!-- <div class="left-logos">
-                        <img src="logos/ucla.jpg" alt="Logo UCLA" class="logo">
-                    </div> -->
                     <h1 class="title">Horario Personalizado - UCLA - NO OFICIAL</h1>
-                    <!-- <img src="logos/dcee.jpg" alt="Logo DCCE" class="logo"> -->
                 </div>
             </div>
         </header>
 
         <main class="main-content">
             <!-- Aviso importante sobre recarga de página -->
-            <p class="creator-note"><i class="fas fa-info-circle"></i> <span class="creator-name">Ideado por: Luis
-                    Trevizon</span></p>
+            <p class="creator-note"><i class="fas fa-info-circle"></i> <span class="creator-name">Ideado por: Luis Trevizon</span></p>
             <div class="info-box warning"><i class="fas fa-exclamation-triangle warning-icon"></i>
                 <strong>¡Importante!</strong> Si recarga esta página, puede perder la información del horario generado.
-                Para conservar su horario, se reocmienda utilizar la función de impresión o tome una captura de
-                pantalla.
+                Para conservar su horario, se recomienda utilizar la función de impresión o descargar la imagen.
                 <br> NO ES OFICIAL<br>
                 <a class="important-link" target="_blank" href="https://www.youtube.com/watch?v=4lh2IbDsCBs">
-                    (Si no sabe como activar el modo computadora o
-                    escritorio, haga click aquí)
+                    (Si no sabe como activar el modo computadora o escritorio, haga click aquí)
                 </a>
             </div>
 
@@ -51,11 +44,15 @@
                 <div class="button-group">
                     <button class="btn btn-primary" onclick="window.location.href='horario.html'">
                         <i class="fas fa-edit"></i>
-                        Volver a Crear Horario
+                        Volver a Crear
                     </button>
                     <button class="btn btn-info" onclick="window.location.href='index.html'">
                         <i class="fas fa-home"></i>
                         Volver al Inicio
+                    </button>
+                    <!-- Botón movido a la sección de controles principales -->
+                    <button id="btn-descargar-img" class="btn btn-primary" type="button" onclick="descargarImagen()">
+                        <i class="fas fa-download"></i> Descargar Imagen
                     </button>
                     <button class="btn btn-success" onclick="window.print()">
                         <i class="fas fa-print"></i>
@@ -84,9 +81,10 @@
     <!-- Estilos adicionales para impresión -->
     <style>
         @media print {
-
+            /* Se incluyó '.header' y '.info-box' para que desaparezcan en la impresión */
+            .header,
             .controls-section,
-            .info-box:first-of-type,
+            .info-box,
             .creator-note,
             .schedule-footer {
                 display: none !important;
@@ -100,12 +98,6 @@
             .container {
                 box-shadow: none !important;
                 border-radius: 0 !important;
-            }
-
-            .header {
-                background: var(--ucla-blue) !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
             }
 
             .turno-header {

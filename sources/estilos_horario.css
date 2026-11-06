@@ -590,3 +590,43 @@ a:visited {
     margin-right: 10px;
     color: #ffc107
 }
+
+/* --- ESTILOS PARA GRUPO DE LIMPIEZA --- */
+.danger-action-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* En pantallas de computadora, ocupa 2 columnas del grid para que quepa bien el texto */
+@media (min-width: 992px) {
+    .danger-action-group {
+        grid-column: span 2;
+    }
+}
+
+/* Estetica roja para que empate con el boton de borrar */
+.danger-action-group .select-danger {
+    border: 2px solid var(--danger);
+    color: var(--danger);
+    font-weight: 600;
+    background-color: transparent;
+    flex: 1; /* Ocupa el espacio restante */
+}
+
+/* Efecto focus con sombra roja */
+.danger-action-group .select-danger:focus {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+}
+
+.danger-action-group .btn {
+    flex-shrink: 0; /* El boton mantiene su tamaño */
+}
+
+/* En telefonos, que se apilen verticalmente */
+@media (max-width: 768px) {
+    .danger-action-group {
+        grid-column: span 1;
+        flex-direction: column;
+    }
+}
