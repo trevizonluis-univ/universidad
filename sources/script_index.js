@@ -75,21 +75,28 @@ var mantenimiento_dcee = false
 var mantenimiento_deha = true
 const decanatos_carreras = {
     dcee: {
-        economia_1: ["m01", "m02", "t01", "t02", "m03", "t03"],
+        economia_1: ["m01", "m02", "m03", "t01", "t02", "t03"],
         economia_2: ["m01", "t01", "t02"],
-        economia_3: ["m01", "t01"],
-        administracion_contaduria_1: ["m01", "m02", "m03", "m04", "m05", "m06", "m07", "m08", "m09", "m10", "m11", "t01", "t02", "t03", "n01", "n02"],
+        economia_3: ["m01", "t01", "t02"],
+        economia_4: ["m01", "t01"],
+        economia_5: ["m01", "t01"],
+        economia_6: ["m01", "t01"],
+        economia_7: ["m01", "t01"],
+        economia_8: ["m01", "t01"],
+        economia_9: ["m01", "t01"],
+        administracion_contaduria_1: ["m01", "m02", "m03", "m04", "m05", "m06", "m07", "m08", "m09", "m10", "t01", "t02", "t03", "n01", "n02", "n03"],
         administracion_contaduria_2: ["m01", "m02", "m03", "m04", "m05", "m06", "t01", "t02", "t04", "n01", "n02", "n03", "n04", "n05", "n06"],
         administracion_contaduria_3: ["m01", "m02", "m03", "m04", "m05", "t01", "t02", "n01", "n02", "n03"],
         administracion_contaduria_4: ["m01", "m02", "m03", "t01", "n01", "n02", "n03"],
-        administracion_contaduria_5: ["m01", "m02", "n01", "n02"],
-        administracion_contaduria_6: ["m01", "m02", "m03", "n01", "n02"],
-        contaduria_7: ['m01', "m02", 'n01', 'n02'],
-        administracion_7: ['m01', "m02", "t01", 'n01', 'n02'],
-        administracion_8: ['m01', "m02", "m03", 'n01', 'n02', 'n03', 'n04'],
-        contaduria_8: ['m01', "m02", "m03", 'n01', 'n02', 'n04'],
-        contaduria_9: ["m01", "m02", "m03", "n01", "n02", "n03"],
-        administracion_9: ["m01", "m02", "m03", "t01", "n01", "n03"],
+        administracion_contaduria_5: ["m01", "m02", "n01", "n02", "n03"],
+        contaduria_6: ["m01", "m02", "m03", "t01", "n01", "n02"],
+        contaduria_7: ["m01", "m02", "n01", "n02"],
+        contaduria_8: ["m01", "m02", "m03", "m04", "n01", "n02", "n04"],
+        contaduria_9: ["m01", "m02", "n01", "n02"],
+        administracion_6: ["m01", "m02", "m03", "t01", "n01", "n02"],
+        administracion_7: ["m01", "m02", "t01", "n01", "n02"],
+        administracion_8: ["m01", "m02", "m03", "m04", "n01", "n02", "n03", "n04"],
+        administracion_9: ["m01", "m02", "t01", "n01", "n02"],
     }
 }
 const decanato_carrera = {
@@ -148,6 +155,9 @@ function getSemesterKey(carrera, nroSemestre) {
     let carreraAcomodada = carrera;
     let nroSemestreAcomodado = nroSemestre;
 
+    // [generar_horarios.py] claves por semestre generadas desde el PDF
+    const claveDirecta = `${carrera}_${nroSemestre}`;
+    if (Object.values(decanatos_carreras).some(d => d[claveDirecta])) return claveDirecta;
     // Normalización para administración/contaduría
     if (carrera === "administracion" || carrera === "contaduria") {
         if (nroSemestre <= 6) {

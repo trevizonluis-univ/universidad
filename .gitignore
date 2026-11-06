@@ -1,1 +1,5 @@
 package-lock.json
+venv/
+sources/script_index.js.bak
+generar_horarios.py
+HORARIOS_2026_2.pdf
